@@ -7,7 +7,7 @@ from tinydb import TinyDB, where
 
 standard = TinyDB("../resources/cards.json")
 
-exists = len(standard.search(where("name") == "standard")) > 0
+exists = len(standard.search(where("name") == "standard")) > 0  # todo fix no jokers
 
 if exists:
 	raise Exception('A deck with that name already exists ("standard")')
@@ -26,5 +26,10 @@ for j in ["Hearts", "Diamonds", "Clubs", "Spades"]:
 			i = "King"
 
 		deck.append(f"{i} of {j}")
+
+standard.insert({"cards": deck, "name": "standard-no-jokers"})
+
+deck.append("Joker")
+deck.append("Joker")
 
 standard.insert({"cards": deck, "name": "standard"})
