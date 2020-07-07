@@ -14,6 +14,7 @@ deck = []
 
 with open("raw-cards.txt", mode="r", encoding='utf-8') as fp:
 	lines = fp.readlines()
+	int_season = -1
 	for season in lines:
 		# split by the card's pre-text which is the value of a card in a 52 card deck--
 		# 	either A, 2-9, 10, J, Q, K
@@ -21,6 +22,7 @@ with open("raw-cards.txt", mode="r", encoding='utf-8') as fp:
 		# 	So we can match for an identifier (A, 2-9, 10, J, Q, K)
 		# 	followed by a capital letter (the start of the next card's text)
 		# Also matches newlines because these appear at the beginning of seasons.
+		int_season += 1
 		for card in re.split("((10|[2-9]|A|J|Q|K)(?=[A-Z])|\n)", season):
 			if card is None or len(card) < 3:  # skip the identifiers, which also make it into the list
 				continue
@@ -35,7 +37,9 @@ with open("raw-cards.txt", mode="r", encoding='utf-8') as fp:
 			elif card.endswith("Autumn"):
 				card = card[:-len("Autumn")]
 
-			deck.append(card)
+			seasons = ["Spring", "Summer", "Autumn", "Winter"]
+
+			deck.append(seasons[int_season] + ": " + card)
 
 
 shuffle = """def shuffler(deck):
